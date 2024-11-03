@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lagu b.hasan</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: black; /* Background color for stars */
+            color: #fff; /* Text color */
+        }
+        h1 {
+            margin: 20px 0;
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+        .lyrics {
+            margin: 20px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent background */
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            text-align: center;
+            display: none;
+            position: relative;
+            z-index: 10; /* Ensure lyrics are on top */
+        }
+        .line {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .visible {
+            opacity: 1;
+        }
+        audio {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 300px;
+            z-index: 10; /* Ensure audio controls are on top */
+            position: relative;
+        }
+        /* Stars and meteors */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: twinkle 1.5s infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.5); }
+        }
+        @keyframes meteor {
+            from {
+                transform: translateY(0) translateX(0);
+            }
+            to {
+                transform: translateY(100vh) translateX(-100vw);
+            }
+        }
+        .meteor {
+            position: absolute;
+            width: 2px;
+            height: 10px;
+            background: rgba(255, 255, 0, 0.8);
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
+            animation: meteor 1s linear infinite;
+        }
+        /* Planets */
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.9;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+        /* Instagram logo styles */
+        .instagram-logo {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px; /* Adjust size as needed */
+            height: 50px; /* Adjust size as needed */
+        }
+    </style>
+</head>
+<body>
+
+    <h1></h1>
+    
+    <div class="lyrics" id="lyrics"></div>
+    
+    <audio id="audio" controls>
+        <source src="masing masing.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+
+<!-- Instagram username and logo -->
+<div style="position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; align-items: flex-start; z-index: 10;">
+    <span style="color: white; font-size: 16px; margin-bottom: 50px;">klik logo👇 </span>
+    <a href="https://www.instagram.com/sanzlkl" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram Logo" class="instagram-logo" style="width: 50px; height: 50px;">
+    </a>
+</div>
+
+
+
+
+
+
+
+
+    
+    
+
+    <script>
+        const lyrics = [
+            { time: 0, text: "Apa rasanya jadi aku" },
+            { time: 6 * 1000, text: "Aku tak kau angkap pada cerita" },
+            { time: 12 * 1000, text: "Aku tak kau angap pada derita" },
+            { time: 18 * 1000, text: "Tapi kamu berlaku bagai pemilik ragaku" },
+            { time: 24 * 1000, text: "Tapi aku letih juga" },
+        ];
+
+        const lyricsDiv = document.getElementById('lyrics');
+        const audio = document.getElementById('audio');
+
+        audio.addEventListener('play', () => {
+            lyricsDiv.innerHTML = ""; // Kosongkan lirik sebelumnya
+            lyricsDiv.style.display = 'block'; // Menampilkan div lirik
+            let currentLine = 0;
+
+            const interval = setInterval(() => {
+                if (currentLine < lyrics.length && audio.currentTime >= lyrics[currentLine].time / 1000) {
+                    const line = document.createElement('p');
+                    line.textContent = lyrics[currentLine].text;
+                    line.classList.add('line');
+                    lyricsDiv.appendChild(line);
+
+                    // Trigger fade-in
+                    setTimeout(() => {
+                        line.classList.add('visible');
+                    }, 10); // Small delay to ensure class is applied
+
+                    currentLine++;
+                } else if (currentLine >= lyrics.length) {
+                    clearInterval(interval); // Hentikan interval jika semua lirik ditampilkan
+                }
+            }, 100); // Perbarui setiap 100 ms
+        });
+
+        // Function to create stars
+        function createStars() {
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3 + 1; // Random size for stars
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.left = Math.random() * 100 + 'vw';
+                document.body.appendChild(star);
+            }
+        }
+
+        // Function to create meteors
+        function createMeteors() {
+            setInterval(() => {
+                const meteor = document.createElement('div');
+                meteor.className = 'meteor';
+                meteor.style.left = Math.random() * 100 + 'vw';
+                meteor.style.animationDuration = (Math.random() * 1 + 0.5) + 's'; // Random duration for meteors
+                document.body.appendChild(meteor);
+
+                // Remove meteor after animation
+                setTimeout(() => {
+                    meteor.remove();
+                }, 1000); // Match this with the animation duration
+            }, 800); // Create a meteor every 800ms
+        }
+
+        // Function to create planets
+        function createPlanets() {
+            const planets = [
+                { size: 40, color: 'blue', top: '20%', left: '10%' },
+                { size: 60, color: 'orange', top: '40%', left: '70%' },
+                { size: 30, color: 'red', top: '80%', left: '50%' },
+                { size: 50, color: 'green', top: '10%', left: '80%' },
+            ];
+
+            planets.forEach(planet => {
+                const planetDiv = document.createElement('div');
+                planetDiv.className = 'planet';
+                planetDiv.style.width = planet.size + 'px';
+                planetDiv.style.height = planet.size + 'px';
+                planetDiv.style.backgroundColor = planet.color;
+                planetDiv.style.top = planet.top;
+                planetDiv.style.left = planet.left;
+                document.body.appendChild(planetDiv);
+            });
+        }
+
+        // Initialize stars, meteors, and planets
+        createStars();
+        createMeteors();
+        createPlanets();
+    </script>
+
+</body>
+</html>
